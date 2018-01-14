@@ -53,7 +53,7 @@ def traj_segment_generator(pi, env, horizon, mpi_id, stochastic):
         acs[i] = ac
         prevacs[i] = prevac
         
-        #env.seed((mpi_id, env_iter,env_rewmean,env_lenmean))
+        env.seed((mpi_id, env_iter,env_rewmean,env_lenmean))
         #print('PPO',env_iter)
         ob, rew, new, _ = env.step(ac)
         rews[i] = rew

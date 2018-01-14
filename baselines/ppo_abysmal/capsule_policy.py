@@ -88,7 +88,6 @@ class Capsule_policy(object):
                 fc2 = tf.contrib.layers.fully_connected(fc1, num_outputs=512)
                 self.decoded = tf.contrib.layers.fully_connected(fc2, num_outputs=784, activation_fn=tf.sigmoid)
 
-
         x = self.one_hot
         x = tf.nn.relu(U.dense(x, 1024, 'lin2', U.normc_initializer(1.0)))
         x = tf.nn.relu(U.dense(x, 512, 'lin', U.normc_initializer(1.0)))
