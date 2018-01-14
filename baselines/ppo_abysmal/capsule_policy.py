@@ -47,6 +47,8 @@ class Capsule_policy(object):
                 digitCaps = CapsLayer(num_outputs=10, vec_len=16, with_routing=True, layer_type='FC')
                 self.caps2 = digitCaps(caps1)
 
+            self.flat=tf.flatten(self.caps2,"flat1")
+
             # Decoder structure in Fig. 2
             # 1. Do masking, how:
             with tf.variable_scope('Masking'):
@@ -81,6 +83,8 @@ class Capsule_policy(object):
                     self.masked_v = tf.multiply(tf.squeeze(self.caps2), tf.reshape(self.Y, (-1, 10, 1)))
                     self.v_length = tf.sqrt(tf.reduce_sum(tf.square(self.caps2), axis=2, keep_dims=True) + epsilon)
 
+            self.marked_v=self.flat
+
             # 2. Reconstructe the MNIST images with 3 FC layers
             # [batch_size, 1, 16, 1] => [batch_size, 16] => [batch_size, 512]
             with tf.variable_scope('Decoder'):
@@ -89,11 +93,11 @@ class Capsule_policy(object):
                 fc2 = tf.contrib.layers.fully_connected(fc1, num_outputs=512)
                 self.decoded = tf.contrib.layers.fully_connected(fc2, num_outputs=784, activation_fn=tf.sigmoid)
 
-        x = self.one_hot
+        x = self.flat
         x = tf.nn.relu(U.dense(x, 1024, 'lin2', U.normc_initializer(1.0)))
         x = tf.nn.relu(U.dense(x, 512, 'lin', U.normc_initializer(1.0)))
 
-        y = self.one_hot
+        y = self.flat
         y = tf.nn.relu(U.dense(y, 1024, 'ylin2', U.normc_initializer(1.0)))
         y = tf.nn.relu(U.dense(y, 512, 'ylin', U.normc_initializer(1.0)))
 
@@ -151,8 +155,6 @@ class Capsule_policy(object):
         ob = np.tile(ob[np.newaxis, :], [cfg.batch_size, 1, 1, 1])
         ac1, vpred1,_ =  self._act(stochastic, ob)
 
-        if ac1[0]==1:
-            print(ac1[0])
         '''
         print(_2[0])
         print(ac1[0])
