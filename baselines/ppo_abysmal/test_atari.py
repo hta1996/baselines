@@ -9,7 +9,7 @@ from baselines import logger
 #from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 
 def train(env_id, num_timesteps, seed):
-    from baselines.ppo_abysmal import mlp_policy, pposgd_simple_test, cnn_policy
+    from baselines.ppo_abysmal import mlp_policy, pposgd_simple_test, cnn_policy, capsule_policy
     import baselines.common.tf_util as U
     rank = MPI.COMM_WORLD.Get_rank()
     sess = U.single_threaded_session()
@@ -24,8 +24,7 @@ def train(env_id, num_timesteps, seed):
     env = gym.make('Abysmal-v0')
     def policy_fn(name, ob_space, ac_space): #pylint: disable=W0613
         return capsule_policy.Capsule_policy(name=name, ob_space=ob_space, ac_space=ac_space)
-        #return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space,
-                                    hid_size=256, num_hid_layers=4)
+        #return mlp_policy.MlpPolicy(name=name, ob_space=ob_space, ac_space=ac_space, hid_size=256, num_hid_layers=4)
         #return cnn_policy.CnnPolicy(name=name, ob_space=ob_space, ac_space=ac_space)
     env = bench.Monitor(env, logger.get_dir() and
         osp.join(logger.get_dir(), str(rank)))
