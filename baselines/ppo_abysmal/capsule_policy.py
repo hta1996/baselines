@@ -149,7 +149,8 @@ class Capsule_policy(object):
     def act(self, stochastic, ob):
         ob = np.tile(ob[np.newaxis, :], [cfg.batch_size, 1, 1, 1])
         ac1, vpred1,_ =  self._act(stochastic, ob)
-        print(_)
+        if random.randint(0,100)==0:
+            print(ac1[0])
         '''
         print(_2[0])
         print(ac1[0])
