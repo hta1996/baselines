@@ -90,11 +90,11 @@ class Capsule_policy(object):
 
 
         x = self.one_hot
-        x = tf.nn.relu(U.dense(x, 1024, 'lin', U.normc_initializer(1.0)))
+        x = tf.nn.relu(U.dense(x, 1024, 'lin2', U.normc_initializer(1.0)))
         x = tf.nn.relu(U.dense(x, 512, 'lin', U.normc_initializer(1.0)))
 
         y = self.one_hot
-        y = tf.nn.relu(U.dense(y, 1024, 'ylin', U.normc_initializer(1.0)))
+        y = tf.nn.relu(U.dense(y, 1024, 'ylin2', U.normc_initializer(1.0)))
         y = tf.nn.relu(U.dense(y, 512, 'ylin', U.normc_initializer(1.0)))
 
         '''
