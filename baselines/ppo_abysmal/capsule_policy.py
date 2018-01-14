@@ -58,7 +58,7 @@ class Capsule_policy(object):
 
             # DigitCaps layer, return [batch_size, 10, 16, 1]
             with tf.variable_scope('DigitCaps_layer1'):
-                c_digitCaps1 = CapsLayer(num_outputs=3, vec_len=1, with_routing=True, layer_type='FC')
+                c_digitCaps1 = CapsLayer(num_outputs=3, vec_len= 1, with_routing=True, layer_type='FC')
                 c_caps2 = c_digitCaps1(c_caps1)
 
         '''
