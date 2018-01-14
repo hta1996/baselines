@@ -5,6 +5,7 @@ from baselines.common.distributions import make_pdtype
 import time
 from capsLayer import CapsLayer
 import numpy as np
+import random
 
 from config import cfg
 
