@@ -34,7 +34,7 @@ class Capsule_policy(object):
                 # Conv1, [batch_size, 20, 20, 256]
                 conv1 = tf.contrib.layers.conv2d(self.X, num_outputs=256,
                                                  kernel_size=9, stride=1,
-                                                 padding='VALID',name='conv1')
+                                                 padding='VALID')
                 assert conv1.get_shape() == [cfg.batch_size, 20, 20, 256]
 
             # Primary Capsules layer, return [batch_size, 1152, 8, 1]
