@@ -9,7 +9,7 @@ from baselines import logger
 #from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 
 def train(env_id, num_timesteps, seed):
-    from baselines.ppo_abysmal import mlp_policy, pposgd_simple_test, cnn_policy, capsule_policy
+    from baselines.ppo_abysmal2 import mlp_policy, pposgd_simple_test, cnn_policy, capsule_policy
     import baselines.common.tf_util as U
     rank = MPI.COMM_WORLD.Get_rank()
     sess = U.single_threaded_session()
