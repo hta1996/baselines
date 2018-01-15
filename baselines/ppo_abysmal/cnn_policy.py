@@ -57,7 +57,7 @@ class CnnPolicy(object):
         self.state_in = []
         self.state_out = []
 
-        self.reconstruction_err=tf.constant(0)
+        self.reconstruction_err=tf.constant(0.)
 
         stochastic = tf.placeholder(dtype=tf.bool, shape=())
         ac = self.pd.sample() # XXX
