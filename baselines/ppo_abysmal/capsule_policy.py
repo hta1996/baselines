@@ -44,7 +44,7 @@ class Capsule_policy(object):
 
             # DigitCaps layer, return [batch_size, 10, 16, 1]
             with tf.variable_scope('DigitCaps_layer'):
-                digitCaps = CapsLayer(num_outputs=10, vec_len=16, with_routing=True, layer_type='FC')
+                digitCaps = CapsLayer(num_outputs=10, vec_len=1, with_routing=True, layer_type='FC')
                 self.caps2 = digitCaps(caps1)
 
             self.flat=tf.layers.flatten(self.caps2,"flat1")
