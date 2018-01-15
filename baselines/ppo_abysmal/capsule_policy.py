@@ -67,6 +67,7 @@ class Capsule_policy(object):
                 self.one_hot = tf.one_hot(self.argmax_idx, 10)
 
                 # Method 1.
+                '''
                 if not cfg.mask_with_y:
                     # c). indexing
                     # It's not easy to understand the indexing process with argmax_idx
@@ -75,7 +76,7 @@ class Capsule_policy(object):
                     masked_v = []
                     for batch_size in range(cfg.batch_size):
                         v = self.caps2[batch_size][self.argmax_idx[batch_size], :]
-                        #masked_v.append(tf.reshape(v, shape=(1, 1, veclen, 1)))
+                        masked_v.append(tf.reshape(v, shape=(1, 1, veclen, 1)))
 
                     self.masked_v = tf.concat(masked_v, axis=0)
                 # Method 2. masking with true label, default mode
@@ -83,7 +84,7 @@ class Capsule_policy(object):
                     # self.masked_v = tf.matmul(tf.squeeze(self.caps2), tf.reshape(self.Y, (-1, 10, 1)), transpose_a=True)
                     self.masked_v = tf.multiply(tf.squeeze(self.caps2), tf.reshape(self.Y, (-1, 10, 1)))
                     self.v_length = tf.sqrt(tf.reduce_sum(tf.square(self.caps2), axis=2, keep_dims=True) + epsilon)
-
+                '''
             self.marked_v=self.flat
 
             # 2. Reconstructe the MNIST images with 3 FC layers
