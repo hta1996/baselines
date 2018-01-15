@@ -43,7 +43,7 @@ class Capsule_policy(object):
                 caps1 = primaryCaps(conv1, kernel_size=9, stride=2)
 
             # DigitCaps layer, return [batch_size, 10, 16, 1]
-            veclen=16
+            veclen=1
             with tf.variable_scope('DigitCaps_layer'):
                 digitCaps = CapsLayer(num_outputs=10, vec_len=veclen, with_routing=True, layer_type='FC')
                 self.caps2 = digitCaps(caps1)
