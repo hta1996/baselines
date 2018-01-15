@@ -149,7 +149,7 @@ def learn(env, policy_func, *,
 
     assert sum([max_iters>0, max_timesteps>0, max_episodes>0, max_seconds>0])==1, "Only one time constraint permitted"
 
-    data_cap='/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir'
+    data_cap='/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir/'
     U.load_state(data_cap+'model_epoch_0002_step_1286')
     print('load capsule!!!')
     time.sleep(3)
