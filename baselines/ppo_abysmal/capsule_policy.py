@@ -43,8 +43,9 @@ class Capsule_policy(object):
                 caps1 = primaryCaps(conv1, kernel_size=9, stride=2)
 
             # DigitCaps layer, return [batch_size, 10, 16, 1]
+            veclen=1
             with tf.variable_scope('DigitCaps_layer'):
-                digitCaps = CapsLayer(num_outputs=10, vec_len=1, with_routing=True, layer_type='FC')
+                digitCaps = CapsLayer(num_outputs=10, vec_len=veclen, with_routing=True, layer_type='FC')
                 self.caps2 = digitCaps(caps1)
 
             self.flat=tf.layers.flatten(self.caps2,"flat1")
@@ -74,7 +75,7 @@ class Capsule_policy(object):
                     masked_v = []
                     for batch_size in range(cfg.batch_size):
                         v = self.caps2[batch_size][self.argmax_idx[batch_size], :]
-                        masked_v.append(tf.reshape(v, shape=(1, 1, 16, 1)))
+                        #masked_v.append(tf.reshape(v, shape=(1, 1, veclen, 1)))
 
                     self.masked_v = tf.concat(masked_v, axis=0)
                 # Method 2. masking with true label, default mode
