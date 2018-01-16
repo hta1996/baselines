@@ -135,6 +135,8 @@ def learn(env, policy_func, *,
 
     #U.initialize()
     U.get_session().run(tf.variables_initializer(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,scope='pi/postcapsule')))
+    U.get_session().run(tf.variables_initializer(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES,scope='oldpi')))
+
     adam.sync()
 
     # Prepare for rollouts
