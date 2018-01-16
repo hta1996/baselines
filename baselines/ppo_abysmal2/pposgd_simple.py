@@ -133,7 +133,8 @@ def learn(env, policy_func, *,
         for (oldv, newv) in zipsame(oldpi.get_variables(), pi.get_variables())])
     compute_losses = U.function([ob, ac, atarg, ret, lrmult], losses)
 
-    U.initialize()
+    #U.initialize()
+    U.get_session().run(tf.variables_initializer(tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES),scope='pi/postcapsule'))
     adam.sync()
 
     # Prepare for rollouts

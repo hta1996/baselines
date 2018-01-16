@@ -105,15 +105,34 @@ class Capsule_policy(object):
             print('load capsule!!!')
             time.sleep(3)
 
-        self.flat=tf.layers.flatten(self.caps2,"flat1")
-        self.masked_v = self.flat
-        x = self.flat
-        x = tf.nn.relu(U.dense(x, 1024, 'lin2', U.normc_initializer(1.0)))
-        x = tf.nn.relu(U.dense(x, 512, 'lin', U.normc_initializer(1.0)))
+        with tf.variable_scope('postcapsule'):
+            self.flat=tf.layers.flatten(self.caps2,"flat1")
+            self.masked_v = self.flat
+            x = self.flat
+            x = tf.nn.relu(U.dense(x, 1024, 'lin2', U.normc_initializer(1.0)))
+            x = tf.nn.relu(U.dense(x, 512, 'lin', U.normc_initializer(1.0)))
 
-        y = self.flat
-        y = tf.nn.relu(U.dense(y, 1024, 'ylin2', U.normc_initializer(1.0)))
-        y = tf.nn.relu(U.dense(y, 512, 'ylin', U.normc_initializer(1.0)))
+            y = self.flat
+            y = tf.nn.relu(U.dense(y, 1024, 'ylin2', U.normc_initializer(1.0)))
+            y = tf.nn.relu(U.dense(y, 512, 'ylin', U.normc_initializer(1.0)))
+
+            # logits = tf.reshape(c_caps2, (cfg.batch_size, -1))
+            logits = U.dense(x, pdtype.param_shape()[0], "logits", U.normc_initializer(0.01))
+            self.pd = pdtype.pdfromflat(logits)
+            self.vpred = U.dense(y, 1, "value", U.normc_initializer(1.0))[:, 0]
+            # self.vpred = caps2 * 100
+            # U.dense(y, 1, "value", U.normc_initializer(1.0))[:,0]
+
+            orgin = tf.reshape(self.X, shape=(cfg.batch_size, -1))
+            squared = tf.square(self.decoded - orgin)
+            self.reconstruction_err = tf.reduce_mean(squared)
+
+            self.state_in = []
+            self.state_out = []
+
+            stochastic = tf.placeholder(dtype=tf.bool, shape=())
+            ac = self.pd.sample()  # XXX
+            self._act = U.function([stochastic, ob], [ac, self.vpred, logits])
 
         '''
         x = ob
@@ -147,23 +166,7 @@ class Capsule_policy(object):
             raise NotImplementedError
         '''
 
-        #logits = tf.reshape(c_caps2, (cfg.batch_size, -1))
-        logits = U.dense(x, pdtype.param_shape()[0], "logits", U.normc_initializer(0.01))
-        self.pd = pdtype.pdfromflat(logits)
-        self.vpred = U.dense(y, 1, "value", U.normc_initializer(1.0))[:, 0]
-        #self.vpred = caps2 * 100
-        #U.dense(y, 1, "value", U.normc_initializer(1.0))[:,0]
 
-        orgin = tf.reshape(self.X, shape=(cfg.batch_size, -1))
-        squared = tf.square(self.decoded - orgin)
-        self.reconstruction_err = tf.reduce_mean(squared)
-
-        self.state_in = []
-        self.state_out = []
-
-        stochastic = tf.placeholder(dtype=tf.bool, shape=())
-        ac = self.pd.sample() # XXX
-        self._act = U.function([stochastic, ob], [ac, self.vpred,logits])
 
     def act(self, stochastic, ob):
         ob = np.tile(ob[np.newaxis, :], [cfg.batch_size, 1, 1, 1])
