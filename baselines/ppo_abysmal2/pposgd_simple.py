@@ -149,11 +149,6 @@ def learn(env, policy_func, *,
 
     assert sum([max_iters>0, max_timesteps>0, max_episodes>0, max_seconds>0])==1, "Only one time constraint permitted"
 
-    data_cap='/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir/'
-    with tf.variable_scope('pi'):
-        U.load_state(data_cap+'model_epoch_0000_step_428')
-    print('load capsule!!!')
-    time.sleep(3)
 
     if (flag_load > 0):
         data_path = '/home/icenter/tmp/openai_data/para_%i/' % (flag_load // 100)
