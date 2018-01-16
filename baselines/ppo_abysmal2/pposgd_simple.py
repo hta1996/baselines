@@ -125,7 +125,8 @@ def learn(env, policy_func, *,
     losses = [pol_surr, pol_entpen, vf_loss, meankl, meanent, pi.reconstruction_err]
     loss_names = ["pol_surr", "pol_entpen", "vf_loss", "kl", "ent", "reconstrction_err"]
 
-    var_list = pi.get_trainable_variables()
+    #var_list = pi.get_trainable_variables()
+    var_list = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'pi/postcapsule')
     lossandgrad = U.function([ob, ac, atarg, ret, lrmult], losses + [U.flatgrad(total_loss, var_list)])
     adam = MpiAdam(var_list, epsilon=adam_epsilon)
 
