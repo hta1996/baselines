@@ -48,7 +48,7 @@ class Capsule_policy(object):
                 digitCaps = CapsLayer(num_outputs=10, vec_len=veclen, with_routing=True, layer_type='FC')
                 self.caps2 = digitCaps(caps1)
 
-            self.flat=tf.layers.flatten(self.caps2,"flat1")
+            #self.flat=tf.layers.flatten(self.caps2,"flat1")
 
             # Decoder structure in Fig. 2
             # 1. Do masking, how:
@@ -64,7 +64,7 @@ class Capsule_policy(object):
                 self.argmax_idx = tf.to_int32(tf.argmax(self.softmax_v, axis=1))
                 self.argmax_idx = tf.reshape(self.argmax_idx, shape=(cfg.batch_size,))
 
-                self.one_hot = tf.one_hot(self.argmax_idx, 10)
+                #self.one_hot = tf.one_hot(self.argmax_idx, 10)
 
                 # Method 1.
 
