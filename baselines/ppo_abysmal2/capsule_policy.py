@@ -48,7 +48,7 @@ class Capsule_policy(object):
                 digitCaps = CapsLayer(num_outputs=10, vec_len=veclen, with_routing=True, layer_type='FC')
                 self.caps2 = digitCaps(caps1)
 
-            #self.flat=tf.layers.flatten(self.caps2,"flat1")
+
 
             # Decoder structure in Fig. 2
             # 1. Do masking, how:
@@ -85,7 +85,6 @@ class Capsule_policy(object):
                     self.masked_v = tf.multiply(tf.squeeze(self.caps2), tf.reshape(self.Y, (-1, 10, 1)))
                     self.v_length = tf.sqrt(tf.reduce_sum(tf.square(self.caps2), axis=2, keep_dims=True) + epsilon)
 
-            #self.masked_v=self.flat
 
             # 2. Reconstructe the MNIST images with 3 FC layers
             # [batch_size, 1, 16, 1] => [batch_size, 16] => [batch_size, 512]
@@ -100,6 +99,8 @@ class Capsule_policy(object):
         print('load capsule!!!')
         time.sleep(3)
 
+        self.flat=tf.layers.flatten(self.caps2,"flat1")
+        self.masked_v = self.flat
         x = self.flat
         x = tf.nn.relu(U.dense(x, 1024, 'lin2', U.normc_initializer(1.0)))
         x = tf.nn.relu(U.dense(x, 512, 'lin', U.normc_initializer(1.0)))
