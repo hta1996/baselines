@@ -14,8 +14,9 @@ class Capsule_policy(object):
     recurrent = False
     def __init__(self, name, ob_space, ac_space, kind='large'):
         with tf.variable_scope(name):
-            self._init(ob_space, ac_space, kind)
             self.scope = tf.get_variable_scope().name
+            self._init(ob_space, ac_space, kind)
+
 
     def _init(self, ob_space, ac_space, kind):
         assert isinstance(ob_space, gym.spaces.Box)
@@ -98,11 +99,11 @@ class Capsule_policy(object):
                 self.decoded = tf.contrib.layers.fully_connected(fc2, num_outputs=784, activation_fn=tf.sigmoid)
                 print(self.decoded.shape)
                 time.sleep(5)
-
-        data_cap = '/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir/'
-        U.load_state(data_cap + 'model_epoch_0000_step_428')
-        print('load capsule!!!')
-        time.sleep(3)
+        if self.scope=='pi':
+            data_cap = '/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir/'
+            U.load_state(data_cap + 'model_epoch_0000_step_428')
+            print('load capsule!!!')
+            time.sleep(3)
 
         self.flat=tf.layers.flatten(self.caps2,"flat1")
         self.masked_v = self.flat
