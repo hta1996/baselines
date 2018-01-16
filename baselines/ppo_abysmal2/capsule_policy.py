@@ -91,10 +91,13 @@ class Capsule_policy(object):
             with tf.variable_scope('Decoder'):
                 vector_j = tf.reshape(self.masked_v, shape=(cfg.batch_size, -1))
                 print(vector_j.shape)
-                time.sleep(5)
                 fc1 = tf.contrib.layers.fully_connected(vector_j, num_outputs=256)
+                print(fc1.shape)
                 fc2 = tf.contrib.layers.fully_connected(fc1, num_outputs=512)
+                print(fc2.shape)
                 self.decoded = tf.contrib.layers.fully_connected(fc2, num_outputs=784, activation_fn=tf.sigmoid)
+                print(self.decoded.shape)
+                time.sleep(5)
 
         data_cap = '/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir/'
         U.load_state(data_cap + 'model_epoch_0000_step_428')
