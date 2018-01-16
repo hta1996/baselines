@@ -101,7 +101,7 @@ class Capsule_policy(object):
                 time.sleep(5)
         if self.scope=='pi':
             data_cap = '/home/icenter/capsule/Caps2/CapsNet-Tensorflow/logdir/'
-            U.load_state(data_cap + 'model_epoch_0000_step_428')
+            U.load_state(data_cap + 'model_epoch_0007_step_3431')
             print('load capsule!!!')
             time.sleep(3)
 
